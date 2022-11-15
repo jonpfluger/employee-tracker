@@ -11,9 +11,6 @@ so that the user can organize and plan a business.
 
 Requires Node.js, Inquirer, and MySQL.
 
-## Screenshot
+## Video Tutorial
 
-
-
-## Link
-
+[Link to Video Tutorial]()

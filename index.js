@@ -8,29 +8,6 @@ const connection = mysql.createConnection({
     database: 'employee_tracker_db'
 })
 
-// view all departments, view all roles, view all employees, add a department, add a role, add an employee, and update an employee role
-
-/*
-const searchEmployee = async () => {
-    const answer = await inquirer.prompt([
-        {
-            type: 'input',
-            name: 'last_name',
-            message: 'Last name: ',
-        }
-    ])
-
-    try {
-        const [results] = await connection.promise().query(`SELECT * FROM employee WHERE last_name = ?`, [answer.last_name])
-        console.log(results)
-        menuPrompt()
-    } catch(err) {
-        throw new Error(err)
-    }
-}
-
-*/
-
 const showDepartments = async () => {
     try {
         const [results] = await connection.promise().query(`SELECT * FROM department`)
