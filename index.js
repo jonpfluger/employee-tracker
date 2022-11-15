@@ -61,6 +61,49 @@ const showEmployees = async () => {
     }
 }
 
+const addDepartment = async () => {
+    const answers = await inquirer.prompt([
+        {
+            type: 'input',
+            name: 'name',
+            message: 'Department name: '
+        }
+    ])
+
+    try {
+        const [results] = await connection.promise().query(`INSERT INTO department (name) VALUES (?)`, answers.name)
+    } catch(err) {
+        throw new Error(err)
+    }
+
+    console.log('Department added!')
+    menuPrompt()
+}
+
+const addRole = async () => {
+    const answers = await inquirer.prompt([
+        {
+            type: 'input',
+            name: 'title',
+            message: 'Role title: '
+        },
+        {
+            type: 'number',
+            name: 'salary',
+            message: 'Salary (Ex 75000): '
+        }
+    ])
+
+    try {
+        const [results] = await connection.promise().query(`INSERT INTO role (title, salary) VALUES (?, ?)`, [answers.title, answers.salary])
+    } catch(err) {
+        throw new Error(err)
+    }
+
+    console.log('Role added!')
+    menuPrompt()
+}
+
 const addEmployee = async () => {
     const answers = await inquirer.prompt([
         {
