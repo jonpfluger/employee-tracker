@@ -58,51 +58,69 @@ const addDepartment = async () => {
 }
 
 const addRole = async () => {
-    const answers = await inquirer.prompt([
-        {
-            type: 'input',
-            name: 'title',
-            message: 'Role title: '
-        },
-        {
-            type: 'number',
-            name: 'salary',
-            message: 'Salary (Ex 75000): '
+    connection.query("SELECT * FROM department", async (err, res) => {
+        const answers = await inquirer.prompt([
+            {
+                type: 'input',
+                name: 'title',
+                message: 'Role title: '
+            },
+            {
+                type: 'number',
+                name: 'salary',
+                message: 'Salary (Ex 75000): '
+            },
+            {
+                type: 'list',
+                name: 'departmentName',
+                message: 'Department name: ',
+                choices: res.map(department => department.name)
+            }
+        ])
+
+        try {
+            const department = res.find(department => department.name === answers.departmentName)
+            const [results] = await connection.promise().query(`INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?)`, [answers.title, answers.salary, department.id])
+        } catch(err) {
+            throw new Error(err)
         }
-    ])
 
-    try {
-        const [results] = await connection.promise().query(`INSERT INTO role (title, salary) VALUES (?, ?)`, [answers.title, answers.salary])
-    } catch(err) {
-        throw new Error(err)
-    }
-
-    console.log('Role added!')
-    menuPrompt()
+        console.log('Role added!')
+        menuPrompt()
+    })
 }
 
 const addEmployee = async () => {
-    const answers = await inquirer.prompt([
-        {
-            type: 'input',
-            name: 'first_name',
-            message: 'First name: '
-        },
-        {
-            type: 'input',
-            name: 'last_name',
-            message: 'Last name: '
-        },
-    ])
+    connection.query("SELECT * FROM role", async (err, res) => {
+        const answers = await inquirer.prompt([
+            {
+                type: 'input',
+                name: 'first_name',
+                message: 'First name: '
+            },
+            {
+                type: 'input',
+                name: 'last_name',
+                message: 'Last name: '
+            },
+            {
+                type: 'list',
+                name: 'roleName',
+                message: 'Role name: ',
+                choices: res.map(role => role.title)
+            }
+        ])
 
-    try {
-        const [results] = await connection.promise().query(`INSERT INTO employee (first_name, last_name) VALUES (?, ?)`, [answers.first_name, answers.last_name])
-    } catch(err) {
-        throw new Error(err)
-    }
+        try {
+            const role = res.find(role => role.title === answers.roleName)
+            const [results] = await connection.promise().query(`INSERT INTO employee (first_name, last_name, role_id) VALUES (?, ?, ?)`, [answers.first_name, answers.last_name, role.id])
+        } catch(err) {
+            throw new Error(err)
+        }
 
-    console.log('Employee added!')
-    menuPrompt()
+        console.log('Employee added!')
+        menuPrompt()
+    })
 }
 
 const updateEmployeeRole = async () => {
@@ -140,7 +158,6 @@ const menuPrompt = async () => {
         },
     ])
 
-    console.log(answers)
     if (answers.action === 'View all departments') {
         showDepartments()
     } else if (answers.action === 'View all roles') {
