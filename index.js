@@ -8,18 +8,9 @@ const connection = mysql.createConnection({
     database: 'employee_tracker_db'
 })
 
-/* 
-
-SELECT department, SUM(total_enrolled) 
-    AS sum_enrolled 
-FROM course_names 
-GROUP BY department;
-
-*/
-
 const showSUM = async () => {
     try {
-        const [results] = await connection.promise().query(`SELECT department, SUM(salary) AS sum_salary FROM course_names GROUP BY department`)
+        const [results] = await connection.promise().query(`SELECT department_id, SUM(salary) AS total_budget FROM role GROUP BY department_id`)
         console.table(results)
         menuPrompt()
     } catch(err) {
@@ -173,7 +164,7 @@ const menuPrompt = async () => {
             type: "list",
             name: "action",
             message: "What do you want to do?",
-            choices: ["View all departments", "View all roles", "View all employees", "Add a department", "Add a role", "Add an employee", "Update an employee role", "Exit"]
+            choices: ["View all departments", "View all roles", "View all employees", "Add a department", "Add a role", "Add an employee", "Update an employee role", "Show total budget of each department", "Exit"]
         },
     ])
 
@@ -191,6 +182,8 @@ const menuPrompt = async () => {
         addEmployee()
     } else if (answers.action === "Update an employee role") {
         updateEmployeeRole()
+    } else if (answers.action === "Show total budget of each department") {
+        showSUM()
     } else {
         process.exit(0)
     }
