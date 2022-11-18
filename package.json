@@ -17,7 +17,6 @@
   "dependencies": {
     "console.table": "^0.10.0",
     "inquirer": "^9.1.4",
-    "mysql2": "^2.3.3",
-    "terminal-kit": "^3.0.0"
+    "mysql2": "^2.3.3"
   }
 }

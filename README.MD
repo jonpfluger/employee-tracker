@@ -9,8 +9,8 @@ so that the user can organize and plan a business.
 
 ## Installation
 
-Requires Node.js, Inquirer, and MySQL.
+Requires the [Inquirer package](https://www.npmjs.com/package/inquirer/v/8.2.4), the [MySQL2 package](https://www.npmjs.com/package/mysql2) to connect to a MySQL database, and the [console.table package](https://www.npmjs.com/package/console.table) to print MySQL rows to the console.
 
 ## Video Tutorial
 
-[Link to Video Tutorial]()
+[Link to Video Tutorial](https://app.castify.com/view/ea2ee924-6e44-4e33-86e2-488526d7ac69)

@@ -8,6 +8,25 @@ const connection = mysql.createConnection({
     database: 'employee_tracker_db'
 })
 
+/* 
+
+SELECT department, SUM(total_enrolled) 
+    AS sum_enrolled 
+FROM course_names 
+GROUP BY department;
+
+*/
+
+const showSUM = async () => {
+    try {
+        const [results] = await connection.promise().query(`SELECT department, SUM(salary) AS sum_salary FROM course_names GROUP BY department`)
+        console.table(results)
+        menuPrompt()
+    } catch(err) {
+        throw new Error(err)
+    }
+}
+
 const showDepartments = async () => {
     try {
         const [results] = await connection.promise().query(`SELECT * FROM department`)
