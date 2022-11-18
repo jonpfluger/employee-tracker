@@ -67,6 +67,25 @@ const addDepartment = async () => {
     menuPrompt()
 }
 
+const deleteDepartment = async () => {
+    const answers = await inquirer.prompt([
+        {
+            type: 'input',
+            name: 'name',
+            message: 'Department name: '
+        }
+    ])
+
+    try {
+        const [results] = await connection.promise().query(`DELETE FROM department WHERE name=?`, answers.name)
+    } catch(err) {
+        throw new Error(err)
+    }
+
+    console.log('Department deleted!')
+    menuPrompt()
+}
+
 const addRole = async () => {
     connection.query("SELECT * FROM department", async (err, res) => {
         const answers = await inquirer.prompt([
@@ -98,6 +117,25 @@ const addRole = async () => {
         console.log('Role added!')
         menuPrompt()
     })
+}
+
+const deleteRole = async () => {
+    const answers = await inquirer.prompt([
+        {
+            type: 'input',
+            name: 'title',
+            message: 'Role title: '
+        }
+    ])
+
+    try {
+        const [results] = await connection.promise().query(`DELETE FROM role WHERE title=?`, answers.title)
+    } catch(err) {
+        throw new Error(err)
+    }
+
+    console.log('Role deleted!')
+    menuPrompt()
 }
 
 const addEmployee = async () => {
@@ -133,6 +171,25 @@ const addEmployee = async () => {
     })
 }
 
+const deleteEmployee = async () => {
+    const answers = await inquirer.prompt([
+        {
+            type: 'input',
+            name: 'id',
+            message: 'Employee ID: '
+        }
+    ])
+
+    try {
+        const [results] = await connection.promise().query(`DELETE FROM employee WHERE id=?`, answers.id)
+    } catch(err) {
+        throw new Error(err)
+    }
+
+    console.log('Employee deleted!')
+    menuPrompt()
+}
+
 const updateEmployeeRole = async () => {
     const answers = await inquirer.prompt([
         {
@@ -164,7 +221,7 @@ const menuPrompt = async () => {
             type: "list",
             name: "action",
             message: "What do you want to do?",
-            choices: ["View all departments", "View all roles", "View all employees", "Add a department", "Add a role", "Add an employee", "Update an employee role", "Show total budget of each department", "Exit"]
+            choices: ["View all departments", "View all roles", "View all employees", "Add a department", "Delete a department", "Add a role", "Delete a role", "Add an employee", "Delete an employee", "Update an employee role", "Show total budget of each department", "Exit"]
         },
     ])
 
@@ -176,10 +233,16 @@ const menuPrompt = async () => {
         showEmployees()
     } else if (answers.action === "Add a department") {
         addDepartment()
+    } else if (answers.action === "Delete a department") {
+        deleteDepartment()
     } else if (answers.action === "Add a role") {
         addRole()
+    } else if (answers.action === "Delete a role") {
+        deleteRole()
     } else if (answers.action === "Add an employee") {
         addEmployee()
+    } else if (answers.action === "Delete an employee") {
+        deleteEmployee()
     } else if (answers.action === "Update an employee role") {
         updateEmployeeRole()
     } else if (answers.action === "Show total budget of each department") {
